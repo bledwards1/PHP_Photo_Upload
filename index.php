@@ -1,3 +1,12 @@
+<?php
+/*
+ License: MIT
+ Date: 1-25-16
+ Brad Edwards
+ This file displays and allows you to upload images
+*/
+?>
+
 <!DOCTYPE html>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -27,13 +36,36 @@
         </div>
   </div>
   
+<!-- Adding in the area to show thumbanils of the files that have been uploaded so far -->
+  <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Photos Uploaded</h3>
+          </div>
+            <div class="panel-body">
+              <?php
+                  class ImageFilter extends FilterIterator {
+                        public function accept() {
+                          return preg_match('@\.(gif|jpe?g|png)$@i',$this->current());
+                        }
+                      }  
+                  foreach (new ImageFilter(new DirectoryIterator('/home/cabox/workspace/object_oriented/uploads'))as $img) {
+                    print "<img src='uploads/".htmlentities($img)."'/>";
+                  }
+              ?>
+          </div>
+          
+    </div>    
+  </div>
+
+  
 </form>
 <?php 
  } else {
   $uploadOk = 1;  
   if (isset($_FILES['fileToUpload']) &&
       ($_FILES['fileToUpload']['error'] == UPLOAD_ERR_OK)) {
-      $newPath = '/tmp/' . basename($_FILES['fileToUpload']['name']);
+      $newPath = '/home/cabox/workspace/object_oriented/uploads/' . basename($_FILES['fileToUpload']['name']);
       $imageFileType = pathinfo($newPath,PATHINFO_EXTENSION);
       // Check if file already exists
       if (file_exists($newPath)) {
@@ -46,7 +78,7 @@
           $uploadOk = 0;
       }
       // Allow certain file formats
-      if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+      if($imageFileType != "PNG" && $imageFileType != "GIF" && $imageFileType != "JPEG" && $imageFileType != "JPG" && $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
           echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
           $uploadOk = 0;
       }
