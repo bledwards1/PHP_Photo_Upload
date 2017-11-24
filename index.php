@@ -1,7 +1,7 @@
 <?php
 /*
  License: MIT
- Date: 1-25-16
+ Date: 11-24-17
  Brad Edwards
  This file displays and allows you to upload images
 */
@@ -48,8 +48,8 @@
                         public function accept() {
                           return preg_match('@\.(gif|jpe?g|png)$@i',$this->current());
                         }
-                      }  
-                  foreach (new ImageFilter(new DirectoryIterator('/home/cabox/workspace/object_oriented/uploads'))as $img) {
+                      }
+                  foreach (new ImageFilter(new DirectoryIterator('uploads/'))as $img) {
                     print "<img src='uploads/".htmlentities($img)."'/>";
                   }
               ?>
@@ -65,7 +65,7 @@
   $uploadOk = 1;  
   if (isset($_FILES['fileToUpload']) &&
       ($_FILES['fileToUpload']['error'] == UPLOAD_ERR_OK)) {
-      $newPath = '/home/cabox/workspace/object_oriented/uploads/' . basename($_FILES['fileToUpload']['name']);
+      $newPath = getcwd().'/uploads/' . basename($_FILES['fileToUpload']['name']);
       $imageFileType = pathinfo($newPath,PATHINFO_EXTENSION);
       // Check if file already exists
       if (file_exists($newPath)) {
@@ -85,6 +85,7 @@
      // *** End of checks ***
     
       if ($uploadOk == 1) {
+	echo $newPath;
         move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $newPath);
         print "Success! The photo was uploaded";
       } else {
