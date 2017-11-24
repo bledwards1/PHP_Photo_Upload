@@ -85,7 +85,6 @@
      // *** End of checks ***
     
       if ($uploadOk == 1) {
-	echo $newPath;
         move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $newPath);
         print "Success! The photo was uploaded";
       } else {
